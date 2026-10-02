@@ -30,7 +30,7 @@ Create the database:
 pnpm exec wrangler d1 create webcounter
 ```
 
-Copy the returned database ID into `worker/wrangler.toml`, replacing `replace-with-your-d1-database-id`.
+Copy the returned database ID into `worker/wrangler.toml`.
 
 Apply the schema and deploy:
 

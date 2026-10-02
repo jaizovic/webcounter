@@ -5,5 +5,5 @@ compatibility_date = "2026-09-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "webcounter"
-database_id = "replace-with-your-d1-database-id"
+database_id = "e196aad3-d612-4761-8f3c-af5bec711824"
 migrations_dir = "migrations"
