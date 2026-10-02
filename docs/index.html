@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Create a privacy-conscious live traffic counter for any website or blog." />
+    <meta name="theme-color" content="#071018" />
+    <title>WebCounter — Live traffic, one tiny widget</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23071018'/%3E%3Cpath d='M13 42V29h8v13zm15 0V19h8v23zm15 0V11h8v31z' fill='%235ce1e6'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="config.js"></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="WebCounter home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>WebCounter</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#how-it-works">How it works</a>
+        <a href="#privacy">Privacy</a>
+        <a class="nav-cta" href="#create">Create widget</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" id="create">
+        <div class="hero-copy">
+          <div class="eyebrow"><span></span> Live traffic, without the surveillance</div>
+          <h1>See who’s visiting.<br /><em>Right now.</em></h1>
+          <p class="hero-intro">
+            Add a lightweight traffic counter to any website or blog. One line of code shows visits,
+            people online, country flags, and your latest visitors.
+          </p>
+
+          <form class="builder" id="widget-form">
+            <div class="form-heading">
+              <div>
+                <span class="step-label">01 / CREATE YOUR WIDGET</span>
+                <h2>Enter your website</h2>
+              </div>
+              <span class="service-state" id="service-state"><i></i><span>Checking service</span></span>
+            </div>
+
+            <label for="domain">Website domain</label>
+            <div class="domain-field">
+              <span aria-hidden="true">https://</span>
+              <input id="domain" name="domain" type="text" inputmode="url" autocomplete="url" placeholder="example.com" required />
+            </div>
+
+            <div class="form-row">
+              <div>
+                <label for="name">Widget name <small>optional</small></label>
+                <input id="name" name="name" type="text" maxlength="60" placeholder="My website" />
+              </div>
+              <fieldset>
+                <legend>Appearance</legend>
+                <div class="theme-choice">
+                  <label><input type="radio" name="theme" value="dark" checked /><span>Midnight</span></label>
+                  <label><input type="radio" name="theme" value="light" /><span>Daylight</span></label>
+                </div>
+              </fieldset>
+            </div>
+
+            <button class="primary-button" type="submit">
+              <span>Create my counter</span>
+              <span aria-hidden="true">+</span>
+            </button>
+            <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+          </form>
+
+          <div class="code-panel" id="code-panel" hidden>
+            <div>
+              <span class="step-label">02 / COPY &amp; PASTE</span>
+              <h2>Your widget is ready</h2>
+            </div>
+            <pre><code id="embed-code"></code></pre>
+            <button class="copy-button" id="copy-button" type="button">Copy embed code</button>
+          </div>
+        </div>
+
+        <div class="preview-column" aria-label="Widget preview">
+          <div class="preview-kicker"><span>LIVE PREVIEW</span><span>Updates every 15 seconds</span></div>
+          <div class="preview-stage">
+            <div class="orb orb-one"></div>
+            <div class="orb orb-two"></div>
+            <div class="widget-preview dark" id="widget-preview">
+              <div class="widget-topline">
+                <div class="live-label"><span></span> LIVE TRAFFIC</div>
+                <div class="signal" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+              </div>
+              <div class="preview-metrics">
+                <div><strong id="preview-visits">12,482</strong><span>Total visits</span></div>
+                <div><strong><b></b><span id="preview-online">8</span></strong><span>Online now</span></div>
+              </div>
+              <div class="recent-label"><span>RECENT VISITORS</span><span>JUST NOW</span></div>
+              <ul class="visitor-list">
+                <li><span class="flag">🇲🇾</span><span><strong>Kuala Lumpur</strong><small>Malaysia</small></span><time>now</time></li>
+                <li><span class="flag">🇬🇧</span><span><strong>London</strong><small>United Kingdom</small></span><time>1m</time></li>
+                <li><span class="flag">🇯🇵</span><span><strong>Tokyo</strong><small>Japan</small></span><time>3m</time></li>
+                <li><span class="flag">🇦🇺</span><span><strong>Sydney</strong><small>Australia</small></span><time>6m</time></li>
+              </ul>
+              <div class="widget-footer"><span>Powered by <strong>WebCounter</strong></span><span>● Live</span></div>
+            </div>
+          </div>
+          <div class="privacy-note"><span aria-hidden="true">◈</span><p><strong>No raw IP storage.</strong> Visitors stay people—not profiles.</p></div>
+        </div>
+      </section>
+
+      <section class="proof-strip" aria-label="Product highlights">
+        <span>NO COOKIES REQUIRED</span><i></i><span>LIGHTWEIGHT EMBED</span><i></i><span>AUTOMATIC COUNTRY FLAGS</span><i></i><span>REAL-TIME PRESENCE</span>
+      </section>
+
+      <section class="how" id="how-it-works">
+        <div class="section-heading">
+          <span class="step-label">HOW IT WORKS</span>
+          <h2>From zero to live<br />in three small steps.</h2>
+          <p>No analytics maze. No complicated dashboard. Create, paste, and watch your audience arrive.</p>
+        </div>
+        <ol class="steps">
+          <li><span>01</span><div class="step-icon">⌁</div><h3>Register your domain</h3><p>Tell WebCounter where the widget will live. We’ll create a unique public site ID.</p></li>
+          <li><span>02</span><div class="step-icon">&lt;/&gt;</div><h3>Paste one line</h3><p>Add the generated script anywhere in your website or blog HTML.</p></li>
+          <li><span>03</span><div class="step-icon">▥</div><h3>Watch it update</h3><p>Your counter refreshes automatically while visitors browse your site.</p></li>
+        </ol>
+      </section>
+
+      <section class="privacy" id="privacy">
+        <div class="privacy-copy">
+          <span class="step-label">BUILT WITH RESTRAINT</span>
+          <h2>Useful numbers.<br />Less personal data.</h2>
+          <p>WebCounter is designed to show activity without turning visitors into advertising profiles.</p>
+        </div>
+        <div class="privacy-grid">
+          <article><span>01</span><h3>No raw IP addresses</h3><p>The API uses anonymous, hashed browser identifiers for short-lived presence counting.</p></article>
+          <article><span>02</span><h3>Only public summaries</h3><p>The widget returns totals, approximate location, and visit time—never a visitor identity.</p></article>
+          <article><span>03</span><h3>Your domain is protected</h3><p>Event requests are accepted only from the domain registered to your site ID.</p></article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>WebCounter</span></a>
+      <p>Small signal. Clear picture.</p>
+      <a href="https://github.com/jaizovic/webcounter">View source on GitHub</a>
+    </footer>
+  </body>
+</html>
