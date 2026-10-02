@@ -129,7 +129,7 @@ async function getStats(request, env, siteId) {
       FROM visits
       WHERE site_id = ?
       ORDER BY visited_at DESC, id DESC
-      LIMIT 12
+      LIMIT 20
     `).bind(siteId),
   ]);
 

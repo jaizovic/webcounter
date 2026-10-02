@@ -5,6 +5,10 @@
   const siteId = script.dataset.site;
   const apiUrl = String(script.dataset.api || "").replace(/\/$/, "");
   const theme = script.dataset.theme === "light" ? "light" : "dark";
+  const requestedWidth = Number(script.dataset.width);
+  const requestedVisitors = Number(script.dataset.visitors);
+  const width = Number.isFinite(requestedWidth) ? Math.min(300, Math.max(220, requestedWidth)) : 300;
+  const visitorLimit = Number.isFinite(requestedVisitors) ? Math.min(20, Math.max(1, Math.round(requestedVisitors))) : 6;
   if (!siteId || !apiUrl) {
     console.warn("WebCounter: data-site and data-api are required.");
     return;
@@ -19,7 +23,7 @@
     <style>
       :host { color-scheme: ${theme}; }
       * { box-sizing: border-box; }
-      .wc-card { width: min(100%, 360px); border-radius: 16px; padding: 18px; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.3; box-shadow: 0 18px 48px rgba(0,0,0,.18); }
+      .wc-card { width: min(100%, ${width}px); border-radius: 16px; padding: 18px; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.3; box-shadow: 0 18px 48px rgba(0,0,0,.18); }
       .wc-card.dark { background: #08131b; border: 1px solid rgba(140,223,228,.2); color: #e8f8f7; }
       .wc-card.light { background: #f4fbfa; border: 1px solid #c5dcda; color: #0b2930; }
       .wc-top, .wc-label, .wc-footer { display: flex; justify-content: space-between; align-items: center; }
@@ -103,7 +107,7 @@
       return;
     }
 
-    stats.recentVisitors.slice(0, 6).forEach((visitor) => {
+    stats.recentVisitors.slice(0, visitorLimit).forEach((visitor) => {
       const item = document.createElement("li");
       const flag = document.createElement("span");
       flag.className = "wc-flag";

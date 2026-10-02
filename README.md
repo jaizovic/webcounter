@@ -13,6 +13,16 @@ Website owners register a domain on the landing page and receive a small script 
 
 Raw IP addresses are never stored. A random browser identifier is hashed by the API before it is used for presence counting.
 
+## Widget options
+
+The generated embed code includes these optional display settings:
+
+- `data-theme="dark"` — use `dark` or `light`.
+- `data-width="300"` — widget width from 220 to a maximum of 300 pixels.
+- `data-visitors="6"` — recent visitor rows from 1 to a maximum of 20.
+
+Older embed codes without these attributes continue to use a 300-pixel width and six recent visitors.
+
 ## 1. Deploy the API
 
 Install Node.js 22 or newer and enable pnpm, then authenticate Wrangler:

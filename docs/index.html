@@ -63,6 +63,19 @@
               </fieldset>
             </div>
 
+            <div class="range-grid">
+              <label class="range-control" for="widget-width">
+                <span>Widget width <output id="width-output" for="widget-width">300 px</output></span>
+                <input id="widget-width" name="width" type="range" min="220" max="300" step="10" value="300" />
+                <small><span>220 px</span><span>Maximum 300 px</span></small>
+              </label>
+              <label class="range-control" for="visitor-count">
+                <span>Recent visitors <output id="visitor-output" for="visitor-count">6</output></span>
+                <input id="visitor-count" name="visitors" type="range" min="1" max="20" step="1" value="6" />
+                <small><span>1 visitor</span><span>Maximum 20</span></small>
+              </label>
+            </div>
+
             <button class="primary-button" type="submit">
               <span>Create my counter</span>
               <span aria-hidden="true">+</span>
@@ -85,7 +98,7 @@
           <div class="preview-stage">
             <div class="orb orb-one"></div>
             <div class="orb orb-two"></div>
-            <div class="widget-preview dark" id="widget-preview">
+            <div class="widget-preview dark" id="widget-preview" style="width: 300px">
               <div class="widget-topline">
                 <div class="live-label"><span></span> LIVE TRAFFIC</div>
                 <div class="signal" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
@@ -95,12 +108,7 @@
                 <div><strong><b></b><span id="preview-online">8</span></strong><span>Online now</span></div>
               </div>
               <div class="recent-label"><span>RECENT VISITORS</span><span>JUST NOW</span></div>
-              <ul class="visitor-list">
-                <li><span class="flag">🇲🇾</span><span><strong>Kuala Lumpur</strong><small>Malaysia</small></span><time>now</time></li>
-                <li><span class="flag">🇬🇧</span><span><strong>London</strong><small>United Kingdom</small></span><time>1m</time></li>
-                <li><span class="flag">🇯🇵</span><span><strong>Tokyo</strong><small>Japan</small></span><time>3m</time></li>
-                <li><span class="flag">🇦🇺</span><span><strong>Sydney</strong><small>Australia</small></span><time>6m</time></li>
-              </ul>
+              <ul class="visitor-list" id="preview-visitors"></ul>
               <div class="widget-footer"><span>Powered by <strong>WebCounter</strong></span><span>● Live</span></div>
             </div>
           </div>
