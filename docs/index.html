@@ -76,6 +76,11 @@
               </label>
             </div>
 
+            <label class="filter-control" for="filter-bots">
+              <input id="filter-bots" name="filterBots" type="checkbox" value="true" checked />
+              <span><strong>Filter likely bots</strong><small>Keep known crawlers and automated tools out of visits and online counts.</small></span>
+            </label>
+
             <button class="primary-button" type="submit">
               <span>Create my counter</span>
               <span aria-hidden="true">+</span>
@@ -90,6 +95,17 @@
             </div>
             <pre><code id="embed-code"></code></pre>
             <button class="copy-button" id="copy-button" type="button">Copy embed code</button>
+            <section class="diagnostics" aria-labelledby="diagnostics-title">
+              <div class="diagnostics-heading">
+                <div><span class="step-label">LAST 24 HOURS</span><h3 id="diagnostics-title">Capture diagnostics</h3></div>
+                <button id="diagnostics-refresh" type="button">Refresh</button>
+              </div>
+              <div class="diagnostic-summary" id="diagnostic-summary">
+                <span><strong>—</strong>Accepted</span><span><strong>—</strong>Bots filtered</span><span><strong>—</strong>Rejected</span>
+              </div>
+              <p class="diagnostic-note">Only page path, browser family, delivery method, and outcome are shown. No IP address or visitor ID is stored here.</p>
+              <div class="diagnostic-list" id="diagnostic-list"><p>Create or find your widget to load diagnostics.</p></div>
+            </section>
           </div>
         </div>
 

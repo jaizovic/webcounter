@@ -20,6 +20,7 @@ The generated embed code includes these optional display settings:
 - `data-theme="dark"` — use `dark` or `light`.
 - `data-width="300"` — widget width from 220 to a maximum of 300 pixels.
 - `data-visitors="6"` — recent visitor rows from 1 to a maximum of 20.
+- `data-filter-bots="true"` — exclude likely crawlers and automated tools. Set to `false` to include them.
 
 Older embed codes without these attributes continue to use a 300-pixel width and six recent visitors.
 
@@ -104,7 +105,14 @@ Update `docs/config.js` to `http://localhost:8787` while testing locally.
 - `POST /api/sites` — register a domain or return its existing public site ID.
 - `POST /api/events` — record a page view or presence heartbeat.
 - `GET /api/sites/:siteId/stats` — return public widget statistics.
+- `GET /api/sites/:siteId/diagnostics` — return a privacy-safe 24-hour capture summary and recent outcomes.
 - `GET /health` — service health check.
+
+## Reliability and diagnostics
+
+The widget uses an older-browser-compatible visitor ID fallback and avoids modern-only syntax in the embed runtime. Events are normally sent with an XMLHttpRequest. If that delivery fails, the widget retries with `sendBeacon`, then a one-pixel image request. A unique event ID prevents a retry from increasing the counter twice.
+
+The widget footer reports rejected or blocked delivery, and also emits a `webcounter:diagnostic` browser event. The diagnostics endpoint and landing-page panel show only the page path, broad browser family, transport, bot classification, outcome, and time. Query strings, full user-agent strings, raw IP addresses, and visitor identifiers are not included. Diagnostic rows are retained for up to seven days and the panel summarizes the latest 24 hours.
 
 ## Current MVP limits
 

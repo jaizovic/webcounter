@@ -8,6 +8,9 @@
   const codePanel = document.querySelector("#code-panel");
   const embedCode = document.querySelector("#embed-code");
   const copyButton = document.querySelector("#copy-button");
+  const diagnosticsRefresh = document.querySelector("#diagnostics-refresh");
+  const diagnosticsSummary = document.querySelector("#diagnostic-summary");
+  const diagnosticsList = document.querySelector("#diagnostic-list");
   const preview = document.querySelector("#widget-preview");
   const previewList = document.querySelector("#preview-visitors");
   const widthInput = document.querySelector("#widget-width");
@@ -16,6 +19,7 @@
   const visitorOutput = document.querySelector("#visitor-output");
   const submitButton = form.querySelector("button[type='submit']");
   const widgetUrl = new URL("widget.js", window.location.href).href;
+  let currentSiteId = "";
   const sampleVisitors = [
     ["🇲🇾", "Kuala Lumpur", "Malaysia", "now"],
     ["🇬🇧", "London", "United Kingdom", "1m"],
@@ -78,6 +82,57 @@
     serviceState.querySelector("span").textContent = label;
   }
 
+  function diagnosticLabel(entry) {
+    if (entry.outcome === "accepted") return entry.likelyBot ? "Accepted bot" : "Accepted";
+    if (entry.outcome === "filtered") return "Bot filtered";
+    if (entry.reason === "origin_mismatch") return "Wrong domain";
+    if (entry.reason === "invalid_visitor") return "Invalid visitor";
+    return "Rejected";
+  }
+
+  function diagnosticTime(epochSeconds) {
+    return new Date(Number(epochSeconds) * 1000).toLocaleString();
+  }
+
+  async function loadDiagnostics() {
+    if (!currentSiteId) return;
+    diagnosticsRefresh.disabled = true;
+    diagnosticsRefresh.textContent = "Loading…";
+    try {
+      const response = await fetch(`${apiUrl}/api/sites/${encodeURIComponent(currentSiteId)}/diagnostics`, { cache: "no-store" });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Unable to load diagnostics");
+      diagnosticsSummary.innerHTML = `
+        <span><strong>${Number(data.summary.accepted || 0).toLocaleString()}</strong>Accepted</span>
+        <span><strong>${Number(data.summary.filteredBots || 0).toLocaleString()}</strong>Bots filtered</span>
+        <span><strong>${Number(data.summary.rejected || 0).toLocaleString()}</strong>Rejected</span>`;
+      diagnosticsList.replaceChildren();
+      if (!data.recent?.length) {
+        const empty = document.createElement("p");
+        empty.textContent = "No diagnostic events yet. New page views will appear here.";
+        diagnosticsList.append(empty);
+        return;
+      }
+      data.recent.forEach((entry) => {
+        const row = document.createElement("div");
+        row.className = `diagnostic-row ${entry.outcome}`;
+        const outcome = document.createElement("strong");
+        outcome.textContent = diagnosticLabel(entry);
+        const path = document.createElement("code");
+        path.textContent = entry.page || "/";
+        const details = document.createElement("span");
+        details.textContent = `${entry.browserFamily || "Unknown"} · ${entry.transport || "unknown"} · ${diagnosticTime(entry.occurredAt)}`;
+        row.append(outcome, path, details);
+        diagnosticsList.append(row);
+      });
+    } catch (error) {
+      diagnosticsList.innerHTML = `<p>${error.message || "Diagnostics are currently unavailable."}</p>`;
+    } finally {
+      diagnosticsRefresh.disabled = false;
+      diagnosticsRefresh.textContent = "Refresh";
+    }
+  }
+
   async function checkService() {
     if (!isConfigured) {
       setServiceState("offline", "Backend setup pending");
@@ -119,6 +174,7 @@
     const theme = String(formData.get("theme") || "dark");
     const width = clampNumber(formData.get("width"), 220, 300, 300);
     const visitors = clampNumber(formData.get("visitors"), 1, 20, 6);
+    const filterBots = formData.get("filterBots") === "true";
     submitButton.disabled = true;
     submitButton.querySelector("span:first-child").textContent = "Creating…";
 
@@ -131,11 +187,13 @@
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Unable to create widget");
 
-      const snippet = `<script async src="${widgetUrl}" data-site="${data.site.id}" data-api="${apiUrl}" data-theme="${theme}" data-width="${width}" data-visitors="${visitors}"><\/script>`;
+      const snippet = `<script async src="${widgetUrl}" data-site="${data.site.id}" data-api="${apiUrl}" data-theme="${theme}" data-width="${width}" data-visitors="${visitors}" data-filter-bots="${filterBots}"><\/script>`;
       embedCode.textContent = snippet;
+      currentSiteId = data.site.id;
       codePanel.hidden = false;
       codePanel.scrollIntoView({ behavior: "smooth", block: "center" });
       message.textContent = data.existing ? "Existing widget found for this domain." : "Widget created successfully.";
+      loadDiagnostics();
     } catch (error) {
       message.classList.add("error");
       message.textContent = error.message || "The service could not create your widget. Please try again.";
@@ -159,6 +217,8 @@
       copyButton.textContent = "Code selected — press Ctrl/Cmd+C";
     }
   });
+
+  diagnosticsRefresh.addEventListener("click", loadDiagnostics);
 
   updatePreviewOptions();
   checkService();
